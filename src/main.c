@@ -132,7 +132,7 @@ void update_led_buffer(unsigned long digit) {
   }
 }
 
-void react_to_input_digit(unsigned char input_key) {
+void react_input_key_driver(unsigned char input_key) {
   // 结果
   static unsigned long RESULT_1 = 0, RESULT_2 = 0;
   // + - * / 操作数
@@ -207,7 +207,7 @@ void react_to_input_digit(unsigned char input_key) {
   }
 }
 
-_Noreturn void get_matrix_input_key_with_interrupt() {
+_Noreturn void react_input_key_with_interrupt() {
   enable_u3_74hc138();
 
   EA = 1;  // enable global interrupt
@@ -230,7 +230,7 @@ _Noreturn void get_matrix_input_key_with_interrupt() {
           // 这里结合 i, j 就可以知道是弹起了哪个按键
           if (PREV_KEY_STATUS[i][j] != 0) {
             digit = key_digit_map(i, j);
-            react_to_input_digit(digit);
+            react_input_key_driver(digit);
           }
           PREV_KEY_STATUS[i][j] = KEY_STATUS[i][j];
         }
@@ -318,6 +318,6 @@ void InterruptTime0_key() __interrupt(1) {
 }
 
 int main() {
-  get_matrix_input_key_with_interrupt();
+  react_input_key_with_interrupt();
   return 0;
 }
