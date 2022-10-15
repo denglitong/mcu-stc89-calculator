@@ -317,9 +317,6 @@ void InterruptTime0_key() __interrupt(1) {
   flush_led_buffer();
 }
 
-// Build command:
-// /usr/local/bin/sdcc --model-large src/main.c && stcgal -P stc89 -p
-// /dev/tty.wchusbserial14220 main.ihx
 int main() {
   get_matrix_input_key_with_interrupt();
   return 0;
